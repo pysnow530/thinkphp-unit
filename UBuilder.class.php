@@ -12,12 +12,18 @@ class UBuilder {
 
     protected $_transactions = array();
 
-    public function add($table, $data) {
+    /**
+     * 添加新数据到数据表
+     * @param $table 表名
+     * @param $data  数据数组
+     * @return @param 添加后获得的数据条目，包含数据库默认值
+     */
+    public function insertData($table, $data) {
         $id = M($table)->add($data);
         $data = M($table)->find($id);
         $this->_transactions[] = array(
             "table"   => $table,
-            "operate" => "add",
+            "operate" => "insert data",
             "data"    => $data,
         );
 
@@ -28,7 +34,7 @@ class UBuilder {
         $transactions = array_reverse($this->_transactions, true);
         foreach ($transactions as $transaction) {
             switch ($transaction["operate"]) {
-            case "add":
+            case "insert data":
                 M($transaction["table"])->delete($transaction["data"]["id"]);
                 break;
             default:

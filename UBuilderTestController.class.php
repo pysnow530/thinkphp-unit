@@ -13,7 +13,7 @@ class UBuilderTestController extends \Library\UnitController {
     /**
      * 测试数据插入函数
      */
-    public function testAdd() {
+    public function testInsertData() {
         $builder = new \Library\UBuilder;
         $table = "Member";
         $data = $where = array(
@@ -23,7 +23,7 @@ class UBuilderTestController extends \Library\UnitController {
             "password"      => "password",
             "email"         => "a@b.com",
         );
-        $builder->add($table, $data);
+        $builder->insertData($table, $data);
         $member = M("Member")->where($where)->find();
         $this->assert(!empty($member));
         unset($builder);
