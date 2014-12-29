@@ -31,4 +31,25 @@ class UBuilderTestController extends \Library\UnitController {
         $this->assert(empty($member));
     }
 
+    /**
+     * 测试创建表函数
+     */
+    public function testCreateTable() {
+        $builder = new \Library\UBuilder;
+
+        // 如果数据表不存在时创建数据表，builder析构时删除该测试表
+        $builder->createTable("foo_bar", array(
+            "id" => "int unsigned auto_increment primary key",
+            "foo" => "varchar(255)",
+            "bar"
+        ));
+        $this->assert($this->_tableExists("foo_bar"));
+        unset($builder);
+        $this->assert(!$this->_tableExists("foo_bar"));
+    }
+
+    private function _tableExists($table) {
+        return M()->query("SHOW TABLES LIKE '$table'") ? true : false;
+    }
+
 }
