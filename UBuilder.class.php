@@ -19,13 +19,19 @@ class UBuilder {
      * @return @param 添加后获得的数据条目，包含数据库默认值
      */
     public function insertData($table, $data) {
-        $id = M($table)->add($data);
-        $data = M($table)->find($id);
-        $this->_transactions[] = array(
-            "table"   => $table,
-            "operate" => "insert data",
-            "data"    => $data,
-        );
+        if ($this->_tableExists($table)) {
+            $id = M($table)->add($data);
+            $data = M($table)->find($id);
+            $this->_transactions[] = array(
+                "table"   => $table,
+                "operate" => "insert data",
+                "data"    => $data,
+            );
+        } else {
+            $log = "Table '$table' is not exists!";
+            \Think\Log::write($log, "ERR");
+            E($log);
+        }
 
         return $data;
     }
