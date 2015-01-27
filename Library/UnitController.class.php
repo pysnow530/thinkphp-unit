@@ -1,7 +1,8 @@
 <?php
 /**
  * @file UnitController.class.php
- * @description 单元测试类，应该叫SimpleUnitController，为了简单...
+ * @description 单元测试类，应该叫SimpleUnitController，为了文件名简单，
+ *              好吧，我自大了
  *
  * @author pysnow530, pysnow530@163.com
  * @date Wed, 20 Aug 2014 12:35:00 GMT
