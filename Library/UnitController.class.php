@@ -159,6 +159,16 @@ class UnitController extends \Think\Controller {
             $this->_failures[] = debug_backtrace();
         }
     }
+    /**
+     * 严格测试$x变量是否为true，主义加强版
+     * @param $x
+     */
+    public function assertTrue($x) {
+        ++$this->_assertions;
+        if (!($x === true)) {
+            $this->_failures[] = debug_backtrace();
+        }
+    }
 
 }
 

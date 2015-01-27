@@ -26,4 +26,14 @@ class UnitTestController extends \Library\UnitController {
         $this->assert($this->hello == "hello, world");
     }
 
+    public function testAssert() {
+        $this->assert(1 === 1);
+        $this->assert(true);
+    }
+
+    public function testAssertTrue() {
+        $this->assertTrue(1 === 1);
+        $this->assertTrue(true);
+    }
+
 }
