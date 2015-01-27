@@ -6,7 +6,7 @@
  * @author pysnow530, pysnow530@163.com
  * @date 2014年12月26日 13:25:58
  */
-namespace Home\Controller;
+namespace Test\Controller;
 
 class UnitTestController extends \Library\UnitController {
 

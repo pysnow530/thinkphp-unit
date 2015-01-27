@@ -6,7 +6,7 @@
  * @author wujm, wujm@zhsh-168.com
  * @date Fri Dec 19 16:00:46 2014
  */
-namespace Home\Controller;
+namespace Test\Controller;
 
 class UBuilderTestController extends \Library\UnitController {
 
