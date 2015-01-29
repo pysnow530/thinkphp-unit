@@ -11,6 +11,14 @@ namespace Test\Controller;
 class UBuilderTestController extends \Library\UnitController {
 
     /**
+     * 选择测试数据库
+     * @param $db_name 数据库名称
+     */
+    public function switchToDb($db_name) {
+        C("DB_NAME", $db_name);
+    }
+
+    /**
      * 测试数据插入函数
      */
     public function testInsertData() {
