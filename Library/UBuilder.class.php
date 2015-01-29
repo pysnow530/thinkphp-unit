@@ -58,7 +58,7 @@ class UBuilder {
             }
             $sql = substr($sql, 0, -2);
             $sql .= ")";
-            M()->query($sql);
+            M()->execute($sql);
 
             $this->_transactions[] = array(
                 "table" => $table,
