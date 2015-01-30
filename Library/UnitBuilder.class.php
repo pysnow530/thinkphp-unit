@@ -20,7 +20,7 @@ class UnitBuilder {
      * $dbConfig 测试数据库配置信息
      */
     public function __construct($dbConfig) {
-        $this->_linkNum  = $this->_linkNumCounter++;
+        $this->_linkNum  = self::$_linkNumCounter++;
         $this->_dbConfig = $dbConfig;
         M()->db($this->_linkNum, $this->_dbConfig);
     }
@@ -32,7 +32,7 @@ class UnitBuilder {
      * @return @param 添加后获得的数据条目，包含数据库默认值
      */
     public function insertData($table, $data) {
-        if ($this->tableExists($table)) {
+        if ($this->isTableExists($table)) {
             $id = M()->db($this->_linkNum)->table($table)->add($data);
             $data = M()->db($this->_linkNum)->table($table)->find($id);
             $this->_transactions[] = array(
@@ -54,7 +54,7 @@ class UnitBuilder {
      * @param $table    表
      * @param $data     数据
      */
-    public function dataExists($table, $data) {
+    public function isDataExists($table, $data) {
         return !!M()->db($this->_linkNum)->table($table)->where($data)->find();
     }
 
@@ -64,7 +64,7 @@ class UnitBuilder {
      * @param $fields 数据域及类型
      */
     public function createTable($table, $fields) {
-        if ($this->tableExists($table)) {
+        if ($this->isTableExists($table)) {
             \Think\Log::write("Table '$table' is already exists!", "WARN");
         } else {
             $sql = "";
@@ -94,7 +94,7 @@ class UnitBuilder {
      * @param $table
      * @return boolean
      */
-    public function tableExists($table) {
+    public function isTableExists($table) {
         return !!M()->db($this->_linkNum)->query("SHOW TABLES LIKE '$table'");
     }
 
