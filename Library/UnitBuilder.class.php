@@ -1,6 +1,6 @@
 <?php
 /**
- * @file UBuilder.class.php
+ * @file UnitBuilder.class.php
  * @description 测试数据构造器
  *
  * @author pysnow530, pysnow530@163.com
@@ -8,9 +8,22 @@
  */
 namespace Library;
 
-class UBuilder {
+class UnitBuilder {
 
     protected $_transactions = array();
+    protected $_linkNum;
+    protected $_dbConfig;
+    protected static $_linkNumCounter = 10;
+
+    /**
+     * 构造方法，负责切换数据库
+     * $dbConfig 测试数据库配置信息
+     */
+    public function __construct($dbConfig) {
+        $this->_linkNum  = $this->_linkNumCounter++;
+        $this->_dbConfig = $dbConfig;
+        M()->db($this->_linkNum, $this->_dbConfig);
+    }
 
     /**
      * 添加新数据到数据表
@@ -19,9 +32,9 @@ class UBuilder {
      * @return @param 添加后获得的数据条目，包含数据库默认值
      */
     public function insertData($table, $data) {
-        if ($this->_tableExists($table)) {
-            $id = M($table)->add($data);
-            $data = M($table)->find($id);
+        if ($this->tableExists($table)) {
+            $id = M()->db($this->_linkNum)->table($table)->add($data);
+            $data = M()->db($this->_linkNum)->table($table)->find($id);
             $this->_transactions[] = array(
                 "table"   => $table,
                 "operate" => "insert data",
@@ -37,12 +50,21 @@ class UBuilder {
     }
 
     /**
+     * 检测数据是否存在
+     * @param $table    表
+     * @param $data     数据
+     */
+    public function dataExists($table, $data) {
+        return !!M()->db($this->_linkNum)->table($table)->where($data)->find();
+    }
+
+    /**
      * 创建测试表
      * @param $table 表名
      * @param $fields 数据域及类型
      */
     public function createTable($table, $fields) {
-        if ($this->_tableExists($table)) {
+        if ($this->tableExists($table)) {
             \Think\Log::write("Table '$table' is already exists!", "WARN");
         } else {
             $sql = "";
@@ -58,7 +80,7 @@ class UBuilder {
             }
             $sql = substr($sql, 0, -2);
             $sql .= ")";
-            M()->execute($sql);
+            M()->db($this->_linkNum)->execute($sql);
 
             $this->_transactions[] = array(
                 "table" => $table,
@@ -67,8 +89,13 @@ class UBuilder {
         }
     }
 
-    private function _tableExists($table) {
-        return M()->query("SHOW TABLES LIKE '$table'") ? true : false;
+    /**
+     * 检测表是否存在
+     * @param $table
+     * @return boolean
+     */
+    public function tableExists($table) {
+        return !!M()->db($this->_linkNum)->query("SHOW TABLES LIKE '$table'");
     }
 
     function __destruct() {
@@ -76,10 +103,10 @@ class UBuilder {
         foreach ($transactions as $transaction) {
             switch ($transaction["operate"]) {
             case "insert data":
-                M($transaction["table"])->delete($transaction["data"]["id"]);
+                M()->db($this->_linkNum)->table($transaction["table"])->delete($transaction["data"]["id"]);
                 break;
             case "create table":
-                M()->execute("drop table `$transaction[table]`");
+                M()->db($this->_linkNum)->execute("drop table `$transaction[table]`");
                 break;
             default:
                 break;

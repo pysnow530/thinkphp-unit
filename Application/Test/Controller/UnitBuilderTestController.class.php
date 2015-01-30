@@ -1,42 +1,40 @@
 <?php
 /**
- * @file UBuilderController.class.php
- * @description UBuilder测试类
+ * @file UnitBuilderController.class.php
+ * @description UnitBuilder测试类
  *
  * @author wujm, wujm@zhsh-168.com
  * @date Fri Dec 19 16:00:46 2014
  */
 namespace Test\Controller;
 
-class UBuilderTestController extends \Library\UnitController {
+class UnitBuilderTestController extends \Library\UnitController {
 
     /**
      * 测试创建表函数
      */
     public function testCreateTable() {
-        $builder = new \Library\UBuilder;
+        $testBuilder  = new \Library\UnitBuilder;
+        $tableBuilder = new \Library\UnitBuilder;
 
         // 如果数据表不存在时创建数据表，builder析构时删除该测试表
-        $builder->createTable("foo_bar", array(
+        $tableBuilder->createTable("foo_bar", array(
             "id" => "int auto_increment primary key",
             "foo" => "varchar(255)",
             "bar"
         ));
-        $this->assert($this->_tableExists("foo_bar"));
-        unset($builder);
-        $this->assert(!$this->_tableExists("foo_bar"));
-    }
-
-    private function _tableExists($table) {
-        return M()->query("SHOW TABLES LIKE '$table'") ? true : false;
+        $this->assert($testBuilder->tableExists("foo_bar"));
+        unset($tableBuilder);
+        $this->assert(!$testBuilder->tableExists("foo_bar"));
     }
 
     /**
      * 测试数据插入函数
      */
     public function testInsertData() {
-        // 生成测试表
-        $tableBuilder = new \Library\UBuilder;
+        $testBuilder  = new \Library\UnitBuilder;
+        $tableBuilder = new \Library\UnitBuilder;
+
         $table = str_shuffle("pysnowpysnowpysnowpysnow");
         $tableBuilder->createTable($table, array(
             "id" => "int auto_increment primary key",
@@ -45,7 +43,7 @@ class UBuilderTestController extends \Library\UnitController {
         ));
 
         // 测试
-        $builder = new \Library\UBuilder;
+        $builder = new \Library\UnitBuilder;
         $data = $where = array(
             "name" => "pysnow",
             "gender" => "man",
