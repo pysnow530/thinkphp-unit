@@ -1,15 +1,14 @@
 <?php
 /**
- * @file UnitController.class.php
- * @description 单元测试类，应该叫SimpleUnitController，为了文件名简单，
- *              好吧，我自大了
+ * @file UnitTestController.class.php
+ * @description 单元测试类
  *
  * @author pysnow530, pysnow530@163.com
  * @date Wed, 20 Aug 2014 12:35:00 GMT
  */
 namespace Library;
 
-class UnitController extends \Think\Controller {
+class UnitTestController extends \Think\Controller {
 
     /**
      * 执行时间
@@ -154,16 +153,6 @@ class UnitController extends \Think\Controller {
      * @param $x
      */
     public function assert($x) {
-        ++$this->_assertions;
-        if (!($x === true)) {
-            $this->_failures[] = debug_backtrace();
-        }
-    }
-    /**
-     * 严格测试$x变量是否为true，主义加强版
-     * @param $x
-     */
-    public function assertTrue($x) {
         ++$this->_assertions;
         if (!($x === true)) {
             $this->_failures[] = debug_backtrace();

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file UnitTestController.class.php
+ * @file UnitTestTestController.class.php
  * @description 测试单元测试控制器
  *
  * @author pysnow530, pysnow530@163.com
@@ -8,7 +8,7 @@
  */
 namespace Test\Controller;
 
-class UnitTestController extends \Library\UnitController {
+class UnitTestTestController extends \Library\UnitTestController {
 
     public function setUp() {
         $this->class = "UnitTestController";
@@ -29,11 +29,6 @@ class UnitTestController extends \Library\UnitController {
     public function testAssert() {
         $this->assert(1 === 1);
         $this->assert(true);
-    }
-
-    public function testAssertTrue() {
-        $this->assertTrue(1 === 1);
-        $this->assertTrue(true);
     }
 
 }
